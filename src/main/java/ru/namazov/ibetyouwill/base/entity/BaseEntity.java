@@ -1,7 +1,11 @@
 package ru.namazov.ibetyouwill.base.entity;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import ru.namazov.ibetyouwill.base.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -24,13 +28,13 @@ public class BaseEntity {
     private Long id;
 
     @CreatedDate
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private Date created;
 
     @LastModifiedDate
     @Column(name = "updated")
     private Date updated;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private Status status;
 }
