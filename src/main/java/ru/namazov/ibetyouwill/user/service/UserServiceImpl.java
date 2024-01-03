@@ -1,5 +1,6 @@
 package ru.namazov.ibetyouwill.user.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ru.namazov.ibetyouwill.base.enums.Status;
@@ -18,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User save(User user) {
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("This user already exists" + user);
         }
         user.setStatus(Status.ENABLE);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
         log.info("UserService save " + savedUser );
@@ -37,8 +40,7 @@ public class UserServiceImpl implements UserService {
         User dbUser = userRepository.findUserByLogin(user.getLogin())
                 .orElseThrow(() -> new NotFoundException("User is not found" + user));
         dbUser.setEmail(user.getEmail());
-        dbUser.setPassword(user.getPassword());
-
+        dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
         User updatedUser = userRepository.save(dbUser);
 
         log.info("UserService update " + updatedUser);
