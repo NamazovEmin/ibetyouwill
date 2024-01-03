@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import ru.namazov.ibetyouwill.base.enums.Status;
+import ru.namazov.ibetyouwill.user.enums.UserStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +39,7 @@ public class BaseEntity {
     private Date updated;
 
     @Column(name = "status", nullable = false)
-    private Status status;
+    private UserStatus userStatus;
 
     @Override
     public boolean equals(Object o) {
@@ -47,11 +47,11 @@ public class BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
         return id.equals(that.id) && created.equals(that.created) && updated.equals(that.updated) &&
-                status == that.status;
+                userStatus == that.userStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created, updated, status);
+        return Objects.hash(id, created, updated, userStatus);
     }
 }

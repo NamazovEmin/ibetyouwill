@@ -1,4 +1,4 @@
-package ru.namazov.ibetyouwill.exception;
+package ru.namazov.ibetyouwill.exceptions;
 
 import ru.namazov.ibetyouwill.base.exception.BaseException;
 

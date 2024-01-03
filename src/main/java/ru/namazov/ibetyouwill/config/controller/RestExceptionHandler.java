@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import ru.namazov.ibetyouwill.exception.NotFoundException;
+import ru.namazov.ibetyouwill.exceptions.NotFoundException;
 
 import lombok.extern.log4j.Log4j2;
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.namazov.ibetyouwill.user.dto.UserDTO;
 import ru.namazov.ibetyouwill.user.entity.User;
 import ru.namazov.ibetyouwill.user.mapper.UserMapper;
-import ru.namazov.ibetyouwill.user.service.interfaces.UserService;
+import ru.namazov.ibetyouwill.user.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -25,9 +25,9 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    ResponseEntity<UserDTO> save(UserDTO userDto) {
-        User user = userMapper.toEntity(userDto);
-        User savedUser = userService.save(user);
+    ResponseEntity<UserDTO> register(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+        User savedUser = userService.register(user);
         UserDTO responseUserDTO = userMapper.toDTO(savedUser);
         return ResponseEntity.ok().body(responseUserDTO);
     }

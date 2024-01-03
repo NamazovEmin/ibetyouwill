@@ -1,4 +1,4 @@
-package ru.namazov.ibetyouwill.user.service.interfaces;
+package ru.namazov.ibetyouwill.user.service;
 
 import org.springframework.stereotype.Service;
 
@@ -7,7 +7,7 @@ import ru.namazov.ibetyouwill.user.entity.User;
 @Service
 public interface UserService {
 
-    User save(User user);
+    User register(User user);
 
     User update(User user);
 
@@ -16,4 +16,6 @@ public interface UserService {
     void delete(String login);
 
     User deactivate(String login);
+
+    User save(User user);
 }
