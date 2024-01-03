@@ -3,6 +3,7 @@ package ru.namazov.ibetyouwill.exception;
 import ru.namazov.ibetyouwill.base.exception.BaseException;
 
 public class IllegalArgumentException extends BaseException {
+
     public IllegalArgumentException() {
     }
 

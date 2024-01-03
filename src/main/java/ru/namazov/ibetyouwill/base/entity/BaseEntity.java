@@ -1,6 +1,7 @@
 package ru.namazov.ibetyouwill.base.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,11 +16,13 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @MappedSuperclass
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class BaseEntity {
 
     @Id
@@ -37,4 +40,18 @@ public class BaseEntity {
 
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseEntity that = (BaseEntity) o;
+        return id.equals(that.id) && created.equals(that.created) && updated.equals(that.updated) &&
+                status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, created, updated, status);
+    }
 }
