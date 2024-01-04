@@ -1,4 +1,4 @@
-package ru.namazov.ibetyouwill.base.exception;
+package ru.namazov.ibetyouwill.exceptions;
 
 public class BaseException extends RuntimeException {
 

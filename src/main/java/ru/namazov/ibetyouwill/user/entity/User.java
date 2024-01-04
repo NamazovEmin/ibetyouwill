@@ -3,8 +3,6 @@ package ru.namazov.ibetyouwill.user.entity;
 import java.util.List;
 import java.util.Objects;
 
-import ru.namazov.ibetyouwill.base.entity.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

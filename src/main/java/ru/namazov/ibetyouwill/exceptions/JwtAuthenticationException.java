@@ -1,7 +1,5 @@
 package ru.namazov.ibetyouwill.exceptions;
 
-import ru.namazov.ibetyouwill.base.exception.BaseException;
-
 public class JwtAuthenticationException extends BaseException {
 
     public JwtAuthenticationException(String message) {

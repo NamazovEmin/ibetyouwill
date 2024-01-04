@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
         user.setRoles(userRoles);
-        user.setUserStatus(UserStatus.ACTIVE);
+        user.setStatus(UserStatus.ACTIVE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User savedUser = save(user);
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User deactivate(String login) {
         User userByLogin = userRepository.findUserByLogin(login).orElseThrow(() -> new NotFoundException("User with login = " + login + " not found"));
-        userByLogin.setUserStatus(UserStatus.DISABLE);
+        userByLogin.setStatus(UserStatus.DISABLE);
         User deactivatedUser = userRepository.save(userByLogin);
 
         log.info("IN deactivate user {} successfully deactivated", deactivatedUser);

@@ -24,7 +24,7 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PostMapping
+    @PostMapping("/registration")
     ResponseEntity<UserDTO> register(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         User savedUser = userService.register(user);

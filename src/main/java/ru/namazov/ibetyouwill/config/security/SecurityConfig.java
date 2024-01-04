@@ -22,7 +22,9 @@ import lombok.AllArgsConstructor;
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
-    private static final String LOGIN_ENDPOINT = "/v1/login";
+    private static final String LOGIN_ENDPOINT = "/login";
+    private static final String REGISTRATION_ENDPOINT = "/users/registration";
+    private static final String USERS_ENDPOINT = "/users/registration";
 
     @Bean
     protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
@@ -33,6 +35,9 @@ public class SecurityConfig {
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(LOGIN_ENDPOINT).permitAll()
+                .requestMatchers(REGISTRATION_ENDPOINT).permitAll()
+                .requestMatchers(REGISTRATION_ENDPOINT).permitAll()
+                .requestMatchers(USERS_ENDPOINT).hasAuthority("USER")
                 .anyRequest().authenticated());
         return http.build();
     }

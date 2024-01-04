@@ -1,4 +1,4 @@
-package ru.namazov.ibetyouwill.base.entity;
+package ru.namazov.ibetyouwill.user.entity;
 
 import java.util.Date;
 import java.util.Objects;
@@ -26,12 +26,12 @@ import lombok.ToString;
 public class BaseEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate
-    @Column(name = "created", nullable = false)
+    @Column(name = "created")
     private Date created;
 
     @LastModifiedDate
@@ -39,7 +39,7 @@ public class BaseEntity {
     private Date updated;
 
     @Column(name = "status", nullable = false)
-    private UserStatus userStatus;
+    private UserStatus status;
 
     @Override
     public boolean equals(Object o) {
@@ -47,11 +47,11 @@ public class BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
         return id.equals(that.id) && created.equals(that.created) && updated.equals(that.updated) &&
-                userStatus == that.userStatus;
+                status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created, updated, userStatus);
+        return Objects.hash(id, created, updated, status);
     }
 }
