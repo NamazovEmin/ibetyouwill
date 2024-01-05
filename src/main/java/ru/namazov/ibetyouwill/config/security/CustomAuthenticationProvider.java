@@ -24,7 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throws AuthenticationException {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
-        User myUser = userService.getByLogin(userName);
+        User myUser = userService.findByLogin(userName);
         if (!password.equals(myUser.getPassword())) {
             throw new BadCredentialsException("Bad password");
         }

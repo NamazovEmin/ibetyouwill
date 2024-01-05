@@ -29,10 +29,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User user) {
-        if (userRepository.findUserByLoginAndEmail(user.getLogin(), user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("User with login = " + user.getLogin() + " and email = " + user.getEmail() + "not found");
+        if(userRepository.findUserByLogin(user.getLogin()).isPresent()) {
+            throw new IllegalArgumentException("User with login = " + user.getLogin() + " already registered");
         }
-        Role roleUser = roleRepository.findByName("ROLE_USER")
+
+        if(userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("User with email = " + user.getEmail() + " already registered");
+        }
+        Role roleUser = roleRepository.findByName("USER")
                 .orElseThrow(() -> new NotFoundException("Current User Role not found"));
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
@@ -48,20 +52,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user) {
-        User dbUser = userRepository.findUserByLogin(user.getLogin())
-                .orElseThrow(() -> new NotFoundException("User = " + user + " not found"));
-        dbUser.setEmail(user.getEmail());
-        dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        User updatedUser = userRepository.save(dbUser);
+    public User deactivate(String login) {
+        User userByLogin = userRepository.findUserByLogin(login).orElseThrow(() -> new NotFoundException("User with login = " + login + " not found"));
+        userByLogin.setStatus(UserStatus.DISABLE);
+        User deactivatedUser = save(userByLogin);
 
-        log.info("IN update - user {} successfully updated to user {}", user, updatedUser);
+        log.info("IN deactivate user {} successfully deactivated", deactivatedUser);
 
-        return updatedUser;
+        return deactivatedUser;
     }
 
     @Override
-    public User getByLogin(String login) {
+    public User findByLogin(String login) {
         User userByLogin = userRepository.findUserByLogin(login).orElseThrow(() -> new NotFoundException("User with login = " + login + " not found"));
 
         log.info("IN getByLogin - user {} founded by login: {}", userByLogin, login);
@@ -71,29 +73,52 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(String login) {
-        User userByLogin = userRepository.findUserByLogin(login).orElseThrow(() -> new NotFoundException("User with login = " + login + " not found"));
+        User userByLogin = findByLogin(login);
         userRepository.delete(userByLogin);
 
         log.info("IN delete user {} successfully deleted", userByLogin);
     }
 
     @Override
-    public User deactivate(String login) {
-        User userByLogin = userRepository.findUserByLogin(login).orElseThrow(() -> new NotFoundException("User with login = " + login + " not found"));
-        userByLogin.setStatus(UserStatus.DISABLE);
-        User deactivatedUser = userRepository.save(userByLogin);
+    public User passwordChange(User user, String newPassword) {
+        User dbUser = findByLogin(user.getLogin());
+        if (!dbUser.getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("User email = " + user.getEmail() + " is incorrect");
+        }
+        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            throw new IllegalArgumentException("User password = " + user.getPassword() + " is incorrect");
+        }
+        dbUser.setPassword(passwordEncoder.encode(newPassword));
+        User updatedUser = userRepository.save(dbUser);
 
-        log.info("IN deactivate user {} successfully deactivated", deactivatedUser);
+        log.info("IN passwordChange - user {} successfully updated to user {}", user, updatedUser);
 
-        return deactivatedUser;
+        return updatedUser;
     }
 
     @Override
-    public User save(User user) {
+    public User emailChange(User user, String newEmail) {
+        User dbUser = findByLogin(user.getLogin());
+        if (!dbUser.getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("User email = " + user.getEmail() + " is incorrect");
+        }
+        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            throw new IllegalArgumentException("User password = " + user.getPassword() + " is incorrect");
+        }
+        dbUser.setEmail(newEmail);
+        User updatedUser = userRepository.save(dbUser);
+
+        log.info("IN emailChange - user {} successfully updated to user {}", user, updatedUser);
+
+        return updatedUser;
+    }
+
+    private User save(User user) {
         User savedUser = userRepository.save(user);
 
         log.info("IN save user {} successfully saved", user);
 
         return savedUser;
     }
+
 }

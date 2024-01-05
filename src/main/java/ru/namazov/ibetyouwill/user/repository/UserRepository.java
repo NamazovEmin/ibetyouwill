@@ -8,7 +8,7 @@ import ru.namazov.ibetyouwill.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findUserByLoginAndEmail(String login, String email);
-
     Optional<User> findUserByLogin(String login);
+
+    Optional<User> findUserByEmail(String email);
 }

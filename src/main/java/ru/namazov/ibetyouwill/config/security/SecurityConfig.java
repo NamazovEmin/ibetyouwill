@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import ru.namazov.ibetyouwill.config.security.jwt.JwtTokenFilter;
 
@@ -24,7 +25,7 @@ public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private static final String LOGIN_ENDPOINT = "/login";
     private static final String REGISTRATION_ENDPOINT = "/users/registration";
-    private static final String USERS_ENDPOINT = "/users/registration";
+    private static final String USERS_ENDPOINT = "/users";
 
     @Bean
     protected SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
@@ -32,13 +33,10 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(LOGIN_ENDPOINT).permitAll()
-                .requestMatchers(REGISTRATION_ENDPOINT).permitAll()
-                .requestMatchers(REGISTRATION_ENDPOINT).permitAll()
-                .requestMatchers(USERS_ENDPOINT).hasAuthority("USER")
-                .anyRequest().authenticated());
+                .requestMatchers(new AntPathRequestMatcher(LOGIN_ENDPOINT)).authenticated()
+                .anyRequest().permitAll());
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

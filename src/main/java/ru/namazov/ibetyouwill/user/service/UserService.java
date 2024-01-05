@@ -9,13 +9,13 @@ public interface UserService {
 
     User register(User user);
 
-    User update(User user);
+    User passwordChange(User user, String newPassword);
 
-    User getByLogin(String login);
+    User findByLogin(String login);
 
     void delete(String login);
 
     User deactivate(String login);
 
-    User save(User user);
+    User emailChange(User user, String email);
 }
