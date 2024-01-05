@@ -1,4 +1,4 @@
-package ru.namazov.ibetyouwill.login;
+package ru.namazov.ibetyouwill.login.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
