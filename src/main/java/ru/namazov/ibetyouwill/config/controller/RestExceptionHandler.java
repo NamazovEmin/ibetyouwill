@@ -14,6 +14,7 @@ import ru.namazov.ibetyouwill.exceptions.IllegalArgumentException;
 import ru.namazov.ibetyouwill.exceptions.JwtAuthenticationException;
 import ru.namazov.ibetyouwill.exceptions.NotFoundException;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -52,5 +53,11 @@ public class RestExceptionHandler {
             errors.add(fieldName + " : " + errorMessage);
         });
         return new ExceptionResponse(errors);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleValidationExceptions(ConstraintViolationException ex) {
+        return new ExceptionResponse(List.of(ex.getMessage()));
     }
 }

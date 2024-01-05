@@ -9,7 +9,7 @@ import lombok.Data;
 public class AuthenticationRequestDTO {
 
     @NotBlank
-    @Size(min = 3, message = "too short, length Min 3")
+    @Size(min = 3, max = 25, message = "incorrect size, length Min 3, Max 25")
     private String userName;
 
     @NotBlank
