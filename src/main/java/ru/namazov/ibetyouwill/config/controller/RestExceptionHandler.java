@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import ru.namazov.ibetyouwill.exceptions.IllegalArgumentException;
+import ru.namazov.ibetyouwill.exceptions.JwtAuthenticationException;
 import ru.namazov.ibetyouwill.exceptions.NotFoundException;
 
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +35,12 @@ public class RestExceptionHandler {
         return new ExceptionResponse(List.of(ex.getMessage()));
     }
 
+    @ExceptionHandler(value = JwtAuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse jwtAuthentication(final JwtAuthenticationException ex) {
+        return new ExceptionResponse(List.of(ex.getMessage()));
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -41,9 +48,7 @@ public class RestExceptionHandler {
         List<String> errors = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
-            System.out.println(fieldName);
             String errorMessage = error.getDefaultMessage();
-            System.out.println(errorMessage);
             errors.add(fieldName + " : " + errorMessage);
         });
         return new ExceptionResponse(errors);
