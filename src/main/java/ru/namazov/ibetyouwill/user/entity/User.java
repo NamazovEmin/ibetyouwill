@@ -23,13 +23,13 @@ import lombok.ToString;
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @Column(name = "login", nullable = false, updatable = false, unique = true)
+    @Column(name = "login", nullable = false, updatable = false, unique = true, length = 25)
     private String login;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 62)
     private String password;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)

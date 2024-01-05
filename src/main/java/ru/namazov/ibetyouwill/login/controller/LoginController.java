@@ -14,11 +14,12 @@ import ru.namazov.ibetyouwill.login.response.AuthResponse;
 import ru.namazov.ibetyouwill.user.entity.User;
 import ru.namazov.ibetyouwill.user.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/login")
+@AllArgsConstructor
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
@@ -26,8 +27,8 @@ public class LoginController {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthenticationRequestDTO auth) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(auth.getUserPassword(), auth.getUserPassword()));
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthenticationRequestDTO auth) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(auth.getUserName(), auth.getUserPassword()));
         User user = userService.findByLogin(auth.getUserName());
         String token = jwtTokenProvider.createToken(user);
         AuthResponse response = new AuthResponse();
@@ -35,6 +36,4 @@ public class LoginController {
         response.setToken(token);
         return ResponseEntity.ok(response);
     }
-
-
 }

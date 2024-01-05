@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Role extends BaseEntity {
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Override

@@ -18,4 +18,6 @@ public interface UserService {
     User deactivate(String login);
 
     User emailChange(User user, String email);
+
+    User save(User user);
 }

@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public User findByLogin(String login) {
         User userByLogin = userRepository.findUserByLogin(login).orElseThrow(() -> new NotFoundException("User with login = " + login + " not found"));
 
-        log.info("IN getByLogin - user {} founded by login: {}", userByLogin, login);
+        log.info("IN findByLogin - user {} founded by login: {}", userByLogin, login);
 
         return userByLogin;
     }
@@ -113,7 +113,8 @@ public class UserServiceImpl implements UserService {
         return updatedUser;
     }
 
-    private User save(User user) {
+    @Override
+    public User save(User user) {
         User savedUser = userRepository.save(user);
 
         log.info("IN save user {} successfully saved", user);

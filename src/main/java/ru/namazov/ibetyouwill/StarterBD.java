@@ -1,5 +1,7 @@
 package ru.namazov.ibetyouwill;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import ru.namazov.ibetyouwill.user.entity.Role;
@@ -37,7 +39,9 @@ public class StarterBD {
         user.setLogin("test");
         user.setEmail("test");
         user.setPassword("test");
-        User savedUser = userService.register(user);
+        user.setStatus(UserStatus.ACTIVE);
+        user.setRoles(List.of(roleRepository.findByName("USER").orElseThrow()));
+        User savedUser = userService.save(user);
 
         log.info("IN addUser - User : {} successfully added", savedUser);
     }

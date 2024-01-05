@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
-    private static final String LOGIN_ENDPOINT = "/login";
+    private final String LOGIN_ENDPOINT = "/login";
     private static final String REGISTRATION_ENDPOINT = "/users/registration";
     private static final String USERS_ENDPOINT = "/users";
 
@@ -34,8 +34,8 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(new AntPathRequestMatcher(LOGIN_ENDPOINT)).authenticated()
-                .anyRequest().permitAll());
+                .requestMatchers(new AntPathRequestMatcher(LOGIN_ENDPOINT)).permitAll()
+                .anyRequest().authenticated());
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

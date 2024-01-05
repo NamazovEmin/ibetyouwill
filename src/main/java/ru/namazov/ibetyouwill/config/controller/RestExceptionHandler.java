@@ -1,8 +1,11 @@
 package ru.namazov.ibetyouwill.config.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,5 +32,20 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse notFound(final NotFoundException ex) {
         return new ExceptionResponse(List.of(ex.getMessage()));
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List<String> errors = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            System.out.println(fieldName);
+            String errorMessage = error.getDefaultMessage();
+            System.out.println(errorMessage);
+            errors.add(fieldName + " : " + errorMessage);
+        });
+        return new ExceptionResponse(errors);
     }
 }
