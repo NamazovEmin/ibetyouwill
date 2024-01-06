@@ -53,6 +53,19 @@ class UserServiceImplTest {
 
     @Test
     void deactivate() {
+        final String login = "emin";
+        final User user = mock(User.class);
+        final User expected = mock(User.class);
+
+        when(userRepository.findUserByLogin(login)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(expected);
+
+        final User actual = userService.deactivate(login);
+
+        assertNotNull(actual);
+        assertEquals(expected, actual, "asdsd");
+        verify(userRepository).findUserByLogin(login);
+        verify(userRepository).save(user);
     }
 
     @Test

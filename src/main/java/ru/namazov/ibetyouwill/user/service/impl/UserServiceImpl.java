@@ -82,12 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User passwordChange(User user, String newPassword) {
         User dbUser = findByLogin(user.getLogin());
-        if (!dbUser.getEmail().equals(user.getEmail())) {
-            throw new IllegalArgumentException("User email = " + user.getEmail() + " is incorrect");
-        }
-        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-            throw new IllegalArgumentException("User password = " + user.getPassword() + " is incorrect");
-        }
+        checkPasswordAndEmailMatch(dbUser, user);
         dbUser.setPassword(passwordEncoder.encode(newPassword));
         User updatedUser = userRepository.save(dbUser);
 
@@ -99,12 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User emailChange(User user, String newEmail) {
         User dbUser = findByLogin(user.getLogin());
-        if (!dbUser.getEmail().equals(user.getEmail())) {
-            throw new IllegalArgumentException("User email = " + user.getEmail() + " is incorrect");
-        }
-        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-            throw new IllegalArgumentException("User password = " + user.getPassword() + " is incorrect");
-        }
+        checkPasswordAndEmailMatch(dbUser, user);
         dbUser.setEmail(newEmail);
         User updatedUser = userRepository.save(dbUser);
 
@@ -122,4 +112,12 @@ public class UserServiceImpl implements UserService {
         return savedUser;
     }
 
+    private void checkPasswordAndEmailMatch(User dbUser, User user) {
+        if (!dbUser.getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("User email = " + user.getEmail() + " is incorrect");
+        }
+        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
+            throw new IllegalArgumentException("User password = " + user.getPassword() + " is incorrect");
+        }
+    }
 }
