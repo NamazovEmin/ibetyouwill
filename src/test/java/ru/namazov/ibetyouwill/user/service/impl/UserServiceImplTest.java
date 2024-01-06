@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import ru.namazov.ibetyouwill.user.entity.Role;
 import ru.namazov.ibetyouwill.user.entity.User;
 import ru.namazov.ibetyouwill.user.repository.RoleRepository;
 import ru.namazov.ibetyouwill.user.repository.UserRepository;
@@ -49,6 +50,30 @@ class UserServiceImplTest {
 
     @Test
     void register() {
+        final User user = new User();
+        user.setLogin("Emin");
+        user.setEmail("email@gmail.com");
+        final Role role = mock(Role.class);
+        final String roleName = "USER";
+
+        final User expected = mock(User.class);
+        final boolean answer = false;
+
+        Optional<User> emptyUser = Optional.empty();
+
+        when(userRepository.findUserByLogin(user.getLogin())).thenReturn(emptyUser);
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(emptyUser);
+        when(roleRepository.findByName(roleName)).thenReturn(Optional.ofNullable(role));
+        when(userRepository.save(user)).thenReturn(expected);
+
+        final User actual = userService.register(user);
+
+        assertNotNull(actual);
+        assertEquals(actual, expected, "");
+        verify(userRepository).findUserByLogin(user.getLogin());
+        verify(userRepository).findUserByEmail(user.getEmail());
+        verify(roleRepository).findByName(roleName);
+        verify(userRepository).save(user);
     }
 
     @Test
