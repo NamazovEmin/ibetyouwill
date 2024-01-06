@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    private record ExceptionResponse(List<String> errors) {
+    public record ExceptionResponse(List<String> errors) {
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
