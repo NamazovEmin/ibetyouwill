@@ -3,12 +3,15 @@ package ru.namazov.ibetyouwill.user.entity;
 import java.util.List;
 import java.util.Objects;
 
+import ru.namazov.ibetyouwill.profile.entity.Profile;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +40,10 @@ public class User extends BaseEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
+
+    @OneToOne()
+    @JoinColumn(name = "profiles_id", referencedColumnName = "id")
+    private Profile profile;
 
     @Override
     public boolean equals(Object o) {
